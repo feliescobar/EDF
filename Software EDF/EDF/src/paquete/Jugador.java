@@ -6,11 +6,14 @@ package paquete;
 
 import java.util.Date;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Felipe7
  */
+
 public class Jugador {
 
     private String direccion;
@@ -18,19 +21,38 @@ public class Jugador {
     private Date fecnac;
     private String nombre;
     private String rut;
+    private String apellido;          
     private int telefono;
+    private String comuna;
+    private String foto;
     
-    public Jugador(String direccion,String estado,Date fecnac,String nombre,String rut,int telefono){
+    String db = "jdbc:odbc:Driver={Microsoft Access Driver (*.mdb)};DBQ=edf.mdb";
+    
+    
+    public Jugador(String direccion,String comuna,String estado,Date fecnac,String nombre,String apellido,String rut,int telefono,String foto){
         this.direccion = direccion;
         this.estado = estado;
         this.fecnac = fecnac;
         this.nombre = nombre;
+        this.apellido = apellido;
         this.rut = rut;
         this.telefono = telefono;
+        this.comuna = comuna;
+        this.foto = foto;
     }   
     
     public void agregarJugador(){
-        
+        //String query = "INSERT INTO Jugador (rut,nombre,apellido,fechaNacimiento,direccion,comuna,telefono,foto,estado) VALUES('"+rut+"','"+nombre+"','"+apellido+"','"+fecnac+"','"+direccion+"','"+comuna+"',"+telefono+",'"+foto+"','"+estado+"')";
+        String query = "INSERT INTO Jugador (rut,nombre) VALUES('"+rut+"','"+nombre+"')";
+        try {
+            Connection con = DriverManager.getConnection(db, "", "");
+            Statement sentencia = con.createStatement();
+	    sentencia.executeUpdate(query);
+            sentencia.close();
+	    con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
